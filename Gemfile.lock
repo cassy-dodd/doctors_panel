@@ -57,7 +57,7 @@ GEM
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2, >= 2.2.2)
     ast (2.4.2)
-    bcrypt (3.1.20)
+    bcrypt (3.1.7)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -72,6 +72,8 @@ GEM
     factory_bot_rails (5.2.0)
       factory_bot (~> 5.2.0)
       railties (>= 4.2.0)
+    faker (2.22.0)
+      i18n (>= 1.8.11, < 2)
     ffi (1.16.3)
     globalid (1.1.0)
       activesupport (>= 5.0)
@@ -89,7 +91,7 @@ GEM
       net-imap
       net-pop
       net-smtp
-    marcel (1.0.2)
+    marcel (1.0.3)
     method_source (1.0.0)
     mini_mime (1.1.5)
     minitest (5.22.2)
@@ -213,6 +215,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   factory_bot_rails (~> 5)
+  faker
   listen (~> 3.2)
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)
