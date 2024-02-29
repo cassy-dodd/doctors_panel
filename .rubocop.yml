@@ -13,6 +13,8 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Exclude:
     - 'bin/bundle'
+Metrics/BlockLength:
+  Enabled: false
 Layout/LineLength:
   Max: 120
   Exclude:
