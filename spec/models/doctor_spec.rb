@@ -20,8 +20,8 @@ RSpec.describe Doctor, type: :model do
         expect(doctor).not_to be_valid
       end
 
-      it 'validates presence of speciality' do
-        doctor = Doctor.new(speciality: nil)
+      it 'validates presence of indication' do
+        doctor = Doctor.new(indication: nil)
         expect(doctor).not_to be_valid
       end
 
