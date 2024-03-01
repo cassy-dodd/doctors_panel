@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Authentications', type: :request do
+RSpec.describe 'Api::V1::Authentications', type: :request do
   let!(:doctor) { create(:doctor, email: 'test@test.com', password: '1234') }
 
   describe 'POST /login' do
     context 'with invalid parameters' do
       it 'returns unauthorized' do
-        post '/login'
+        post '/api/v1/login'
 
         expect(response).to have_http_status(:unauthorized)
       end
@@ -16,7 +16,7 @@ RSpec.describe 'Authentications', type: :request do
 
     context 'with valid parameters' do
       before do
-        post '/login', params: test_params
+        post '/api/v1/login', params: test_params
       end
 
       context 'when passwords do not match' do
