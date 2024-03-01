@@ -3,5 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Indication, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'validations' do
+    it 'validates presence of name' do
+      indication = Indication.new(name: nil)
+      expect(indication).not_to be_valid
+    end
+  end
 end

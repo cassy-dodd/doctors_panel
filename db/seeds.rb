@@ -12,6 +12,30 @@ indication_rash = Indication.create(name: 'rash')
 INDICATIONS = [indication_hair_loss, indication_diabetes, indication_cough, indication_rash].freeze
 
 10.times do
-  Doctor.create(name: Faker::Name.unique.first_name, email: Faker::Internet.unique.email,
-                indication: INDICATIONS.sample, password: 'password1234', password_confirmation: 'password1234')
+  Doctor.create(name: Faker::Name.unique.first_name,
+                email: Faker::Internet.unique.email,
+                indication: INDICATIONS.sample,
+                password: 'password1234',
+                password_confirmation: 'password1234')
+end
+
+doctors = Doctor.all
+
+10.times do
+  doctor = doctors.sample
+  patient_indication = doctor.indication
+  Patient.create(
+    first_name: Faker::Name.unique.first_name,
+    last_name: Faker::Name.unique.last_name,
+    email: Faker::Internet.unique.email,
+    indication: patient_indication,
+    doctor: doctor
+  )
+end
+
+5.times do
+  Patient.create(first_name: Faker::Name.unique.first_name,
+                 last_name: Faker::Name.unique.last_name,
+                 email: Faker::Internet.unique.email,
+                 indication: INDICATIONS.sample)
 end
