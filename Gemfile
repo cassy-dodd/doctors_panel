@@ -17,6 +17,7 @@ gem 'puma', '~> 4.1'
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+gem 'jwt'
 gem 'rubocop'
 
 # Use Active Storage variant
@@ -33,6 +34,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails', '~> 5'
   gem 'faker'
+  gem 'pry', '~> 0.14.2'
   gem 'rspec-rails', '~> 5.0.0'
 end
 
