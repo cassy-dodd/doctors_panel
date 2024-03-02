@@ -7,4 +7,10 @@ class Patient < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true
+
+  scope :awaiting_doctor, lambda { |indication_name|
+    joins(:indication)
+      .where(doctor_id: nil)
+      .where(indications: { name: indication_name })
+  }
 end
