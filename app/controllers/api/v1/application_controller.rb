@@ -3,11 +3,29 @@
 module Api
   module V1
     class ApplicationController < ActionController::API
-      SECRET_KEY = Rails.application.credentials.jwt[:secret_key]
+      before_action :authenticate_doctor!
 
-      def encode_token(payload, exp: 1.day.from_now)
-        exp_payload = payload.merge({ exp: exp.to_i })
-        JWT.encode(exp_payload, SECRET_KEY)
+      def current_doctor
+        token = fetch_token_from_headers
+        return unless token.present?
+
+        decoded_token = Authentication::Jwt::DecodeTokenService.call(token)
+        return unless decoded_token
+
+        doctor_id = decoded_token[0]['doctor_id']
+        @doctor = Doctor.find_by(id: doctor_id)
+      end
+
+      def authenticate_doctor!
+        return if current_doctor.present?
+
+        render json: { message: 'unsuccessful' }, status: :unauthorized
+      end
+
+      private
+
+      def fetch_token_from_headers
+        request.headers['Authorization']&.split&.last
       end
     end
   end
