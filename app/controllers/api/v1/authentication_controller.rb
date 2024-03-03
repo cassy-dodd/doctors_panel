@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class AuthenticationController < Api::V1::ApplicationController
+    class AuthenticationController < ApplicationController
       skip_before_action :authenticate_doctor!
 
       def create

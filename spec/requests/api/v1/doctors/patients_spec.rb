@@ -20,9 +20,7 @@ RSpec.describe 'Api::V1::Doctors::Patients', type: :request do
 
           expect(response).to have_http_status(:ok)
 
-          body = JSON.parse(response.body)
-
-          expect(body.length).to eq(2)
+          expect(json.length).to eq(2)
         end
       end
 
@@ -33,10 +31,16 @@ RSpec.describe 'Api::V1::Doctors::Patients', type: :request do
           get '/api/v1/doctors/patients', headers: { Authorization: "Bearer #{token}" }, params: { sort: 'appointment' }
 
           expect(response).to have_http_status(:ok)
+          expect(json.length).to eq(3)
+        end
+      end
 
-          body = JSON.parse(response.body)
+      context 'with invalid params' do
+        it 'returns an error message' do
+          get '/api/v1/doctors/patients', headers: { Authorization: "Bearer #{token}" }, params: { sort: 'foobar' }
 
-          expect(body.length).to eq(3)
+          expect(response).to have_http_status(:bad_request)
+          expect(json['error']).to eq('Invalid parameter')
         end
       end
     end
@@ -48,5 +52,9 @@ RSpec.describe 'Api::V1::Doctors::Patients', type: :request do
         expect(response).to have_http_status(:unauthorized)
       end
     end
+  end
+
+  def json
+    JSON.parse(response.body)
   end
 end

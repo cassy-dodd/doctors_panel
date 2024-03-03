@@ -3,6 +3,8 @@
 module Api
   module V1
     class ApplicationController < ActionController::API
+      include ::Pundit::Authorization
+
       before_action :authenticate_doctor!
 
       def current_doctor
@@ -23,6 +25,10 @@ module Api
       end
 
       private
+
+      def pundit_user
+        current_doctor
+      end
 
       def fetch_token_from_headers
         request.headers['Authorization']&.split&.last
