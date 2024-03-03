@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 require 'faker'
+
+Rails.logger = Logger.new($stdout)
 
 indication_hair_loss = Indication.create(name: 'hair_loss')
 indication_diabetes = Indication.create(name: 'diabetes')
-indication_cough =  Indication.create(name: 'cough')
+indication_cough = Indication.create(name: 'cough')
 indication_rash = Indication.create(name: 'rash')
 
 INDICATIONS = [indication_hair_loss, indication_diabetes, indication_cough, indication_rash].freeze
 
+Rails.logger.info { 'Creating some doctors' }
 10.times do
   Doctor.create(name: Faker::Name.unique.first_name,
                 email: Faker::Internet.unique.email,
@@ -21,18 +22,26 @@ end
 
 doctors = Doctor.all
 
-10.times do
+Rails.logger.info { "Creating doctors' patients and appointments" }
+20.times do
   doctor = doctors.sample
   patient_indication = doctor.indication
-  Patient.create(
+  patient = Patient.create(
     first_name: Faker::Name.unique.first_name,
     last_name: Faker::Name.unique.last_name,
     email: Faker::Internet.unique.email,
     indication: patient_indication,
     doctor: doctor
   )
+
+  Appointment.create(
+    patient: patient,
+    doctor: doctor,
+    scheduled_at: Faker::Time.between(from: DateTime.now, to: 1.year.from_now)
+  )
 end
 
+Rails.logger.info { 'Creating unassigned patients' }
 5.times do
   Patient.create(first_name: Faker::Name.unique.first_name,
                  last_name: Faker::Name.unique.last_name,
