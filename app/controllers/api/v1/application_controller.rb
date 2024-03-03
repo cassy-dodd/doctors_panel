@@ -4,6 +4,7 @@ module Api
   module V1
     class ApplicationController < ActionController::API
       include ::Pundit::Authorization
+      rescue_from Pundit::NotAuthorizedError, with: :unauthorized
 
       before_action :authenticate_doctor!
 
@@ -32,6 +33,10 @@ module Api
 
       def fetch_token_from_headers
         request.headers['Authorization']&.split&.last
+      end
+
+      def unauthorized
+        render json: { error: 'You are not authorized to perform this action.' }, status: :unauthorized
       end
     end
   end

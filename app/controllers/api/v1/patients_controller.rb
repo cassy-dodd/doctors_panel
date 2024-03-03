@@ -8,8 +8,8 @@ module Api
         # patients without a doctor_id
         ### List of patients that could be assigned to doctor
         # * Get all patients without a doctor and have the same indication the current doctor can treat.
-
-        @patients = Patient.awaiting_doctor(current_doctor.indication.name)
+        authorize [:api, :v1, Patient]
+        @patients = policy_scope([:api, :v1, Patient])
         render json: @patients
       end
 
@@ -21,35 +21,13 @@ module Api
         # * No two doctors can treat the same patient.
 
         @patient = Patient.find(params[:id])
+        authorize [:api, :v1, @patient]
 
-        return render_untrained_doctor_error unless doctor_trained_for_indication?
-
-        return render_patient_already_assigned_error if patient_already_assigned?
-
-        assign_patient_to_current_doctor
-      end
-
-      private
-
-      def doctor_trained_for_indication?
-        current_doctor.indication.name == @patient.indication.name
-      end
-
-      def render_untrained_doctor_error
-        render json: { error: "Doctor is not trained for this patient's indication" }, status: :unprocessable_entity
-      end
-
-      def patient_already_assigned?
-        @patient.doctor.present?
-      end
-
-      def render_patient_already_assigned_error
-        render json: { error: 'Patient already has a doctor assigned' }, status: :unprocessable_entity
-      end
-
-      def assign_patient_to_current_doctor
-        @patient.update(doctor_id: current_doctor.id)
-        render json: { message: 'Patient assigned successfully' }, status: :ok
+        if @patient.update(doctor_id: current_doctor.id)
+          render json: { message: 'Patient assigned successfully' }, status: :ok
+        else
+          render json: @patient.errors, status: :unprocessable_entity
+        end
       end
     end
   end

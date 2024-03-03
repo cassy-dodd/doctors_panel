@@ -34,6 +34,7 @@ RSpec.describe 'Api::V1::Patients', type: :request do
 
   describe 'PUT /api/v1/patients/:id' do
     let(:patient) { create(:patient, indication: doctor.indication) }
+    let(:pundit_error_msg) { { 'error' => 'You are not authorized to perform this action.' } }
 
     context 'when authenticated' do
       before do
@@ -58,8 +59,7 @@ RSpec.describe 'Api::V1::Patients', type: :request do
           it 'returns an error message' do
             put "/api/v1/patients/#{patient.id}", headers: { Authorization: "Bearer #{token}" }
 
-            expect(response).to have_http_status(:unprocessable_entity)
-            expect(json['error']).to eq("Doctor is not trained for this patient's indication")
+            expect(json).to eq(pundit_error_msg)
           end
         end
       end
@@ -70,8 +70,7 @@ RSpec.describe 'Api::V1::Patients', type: :request do
         it 'returns an error message' do
           put "/api/v1/patients/#{patient.id}", headers: { Authorization: "Bearer #{token}" }
 
-          expect(response).to have_http_status(:unprocessable_entity)
-          expect(json['error']).to eq('Patient already has a doctor assigned')
+          expect(json).to eq(pundit_error_msg)
         end
       end
     end

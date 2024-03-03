@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# spec/policies/api/v1/doctors/patient_policy_spec.rb
 require 'rails_helper'
 
 RSpec.describe Api::V1::Doctors::PatientPolicy, type: :policy do
