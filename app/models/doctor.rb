@@ -3,6 +3,7 @@
 class Doctor < ApplicationRecord
   belongs_to :indication
   has_many :appointments
+  has_many :patients
   has_secure_password
 
   validates :name, presence: true
