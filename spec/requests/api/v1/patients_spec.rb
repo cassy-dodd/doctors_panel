@@ -19,7 +19,7 @@ RSpec.describe 'Api::V1::Patients', type: :request do
 
         get '/api/v1/patients', headers: { Authorization: "Bearer #{token}" }
 
-        expect(response).to have_http_status(:success)
+        expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body).size).to eq(3)
       end
     end

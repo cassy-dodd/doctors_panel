@@ -6,6 +6,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       post '/login', to: 'authentication#create'
       resources :patients, only: %i[index update]
+      namespace :doctors do
+        resources :patients, only: :index
+      end
     end
   end
 end
