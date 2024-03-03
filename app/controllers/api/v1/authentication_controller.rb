@@ -27,9 +27,3 @@ module Api
     end
   end
 end
-
-# Assuming that we already have doctors in our db who want to log-in and access their exisiting/new patients
-# TODO: Two step authentication
-# ABAC authorisation in policies
-
-# TODO: add appointments
