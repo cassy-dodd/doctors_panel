@@ -10,9 +10,9 @@ module Api
           # ### As a doctor get list of my patients
           # * Return assigned patients
           # * The list can be sorted by patient last name or by the closest appointment.
+          authorize [:api, :v1, :doctors, Patient]
+          @patients = policy_scope([:api, :v1, :doctors, Patient])
           if sort_param_valid?
-            authorize [:api, :v1, :doctors, Patient]
-            @patients = policy_scope([:api, :v1, :doctors, Patient])
             @patients = PatientFilter.new(current_doctor.patients, filter_params).call
             render json: Api::V1::PatientSerializer.new(@patients).serialized_json
           else
@@ -27,7 +27,7 @@ module Api
         end
 
         def sort_param_valid?
-          params[:sort].present? && VALID_SORT_PARAMS.include?(params[:sort])
+          VALID_SORT_PARAMS.include?(filter_params[:sort]) || filter_params[:sort].blank?
         end
       end
     end

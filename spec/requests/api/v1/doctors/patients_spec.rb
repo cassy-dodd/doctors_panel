@@ -43,6 +43,15 @@ RSpec.describe 'Api::V1::Doctors::Patients', type: :request do
           expect(json['error']).to eq('Invalid parameter')
         end
       end
+
+      context 'with empty params' do
+        it 'returns an error message' do
+          get '/api/v1/doctors/patients', headers: { Authorization: "Bearer #{token}" }
+
+          expect(response).to have_http_status(:ok)
+          expect(json['data'].length).to eq(2)
+        end
+      end
     end
 
     context 'when not authenticated' do
