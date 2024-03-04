@@ -9,8 +9,8 @@ module Api
         ### List of patients that could be assigned to doctor
         # * Get all patients without a doctor and have the same indication the current doctor can treat.
         authorize [:api, :v1, Patient]
-        @patients = policy_scope([:api, :v1, Patient])
-        render json: @patients
+        @patients = policy_scope([:api, :v1, Patient]).includes(:indication)
+        render json: Api::V1::PatientSerializer.new(@patients).serialized_json
       end
 
       def update
@@ -19,7 +19,6 @@ module Api
         ### Doctor assignment
         # * Doctors can only treat patients with the indication they are trained for.
         # * No two doctors can treat the same patient.
-
         @patient = Patient.find(params[:id])
         authorize [:api, :v1, @patient]
 

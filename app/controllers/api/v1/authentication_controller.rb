@@ -8,10 +8,9 @@ module Api
       def create
         @doctor = Doctor.find_by(email: login_params[:email])
         if @doctor&.authenticate(login_params[:password])
-          # TODO: add serializer and don't expose all model attrs to client
           @token = Authentication::Jwt::EncodeTokenService.call(doctor_id: @doctor.id)
           render json: {
-            doctor: @doctor,
+            doctor: Api::V1::DoctorSerializer.new(@doctor).serialized_json,
             token: @token
           }, status: :accepted
         else

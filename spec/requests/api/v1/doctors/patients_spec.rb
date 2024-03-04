@@ -20,7 +20,7 @@ RSpec.describe 'Api::V1::Doctors::Patients', type: :request do
 
           expect(response).to have_http_status(:ok)
 
-          expect(json.length).to eq(2)
+          expect(json['data'].length).to eq(2)
         end
       end
 
@@ -31,7 +31,7 @@ RSpec.describe 'Api::V1::Doctors::Patients', type: :request do
           get '/api/v1/doctors/patients', headers: { Authorization: "Bearer #{token}" }, params: { sort: 'appointment' }
 
           expect(response).to have_http_status(:ok)
-          expect(json.length).to eq(3)
+          expect(json['data'].length).to eq(3)
         end
       end
 

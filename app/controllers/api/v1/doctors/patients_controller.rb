@@ -14,7 +14,7 @@ module Api
             authorize [:api, :v1, :doctors, Patient]
             @patients = policy_scope([:api, :v1, :doctors, Patient])
             @patients = PatientFilter.new(current_doctor.patients, filter_params).call
-            render json: @patients
+            render json: Api::V1::PatientSerializer.new(@patients).serialized_json
           else
             render json: { error: 'Invalid parameter' }, status: :bad_request
           end
